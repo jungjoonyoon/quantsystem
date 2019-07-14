@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.themachine.quantsystem.mapper.QuantMapper">
+ 
+    <select id="retrieveHistoryData" resultType="TradeBar">
+    	<![CDATA[ 
+		 SELECT STR_TO_DATE(CONCAT(YMD, HMS), '%Y%m%d%H%i%s') TIME,
+		        OPEN,
+		        HIGH,
+		        LOW,
+		        CLOSE,
+		        VOLUME
+		   FROM FT150
+		  WHERE YMD <= '20030717'
+		  ORDER BY YMD, SEQ
+        ]]>
+    </select>
+ 
+    <select id="retrieveBacktestDays" resultType="string">
+    	<![CDATA[ 
+		 SELECT DISTINCT YMD AS YMD
+		   FROM FT150
+		  WHERE YMD BETWEEN '20030717' AND '20030831'
+		  ORDER BY YMD
+        ]]>
+    </select>
+ 
+    <select id="retrieveBacktestData" resultType="TradeBar" parameterType="string">
+    	<![CDATA[ 
+		 SELECT STR_TO_DATE(CONCAT(YMD, HMS), '%Y%m%d%H%i%s') TIME,
+		        OPEN,
+		        HIGH,
+		        LOW,
+		        CLOSE,
+		        VOLUME
+		   FROM FT150
+		  WHERE YMD = #{date}
+		  ORDER BY YMD, SEQ
+        ]]>
+    </select>
+
+    <insert id="insertRatio" parameterType="map">
+    </insert>
+
+</mapper>
